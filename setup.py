@@ -61,7 +61,7 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
-    packages=find_packages(exclude=['*tests*']),
+    packages=find_packages(exclude=['test.*', 'test']),
     install_requires=DEPENDENCIES,
     extras_require={
         'YAML': ['pyyaml'],
