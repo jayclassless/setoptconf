@@ -1,0 +1,6 @@
+pyyaml
+nose
+coverage
+nosy
+prospector
+
