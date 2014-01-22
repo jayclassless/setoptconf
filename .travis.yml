@@ -6,8 +6,11 @@ python:
   - "3.3"
 install:
   - pip install -r requirements.txt
+  - python setup.py install
+before_script:
+  - cp -r test build/lib
 script:
-  - python setup.py nosetests
+  - nosetests --where=build/lib
 notifications:
   email: false
 
