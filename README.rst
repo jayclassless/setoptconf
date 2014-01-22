@@ -19,27 +19,23 @@ like to use, and let it comb them all, looking for your settings.
 This README is admittedly very light on details. Full documentation will come
 in time. For now, here's an example of its use:
 
-Import the library:
+Import the library::
 
-::
     import setoptconf as soc
 
-Instantiate the manager:
+Instantiate the manager::
 
-::
     manager = soc.ConfigurationManager('myprogram')
 
-Define the settings we'd like to collect:
+Define the settings we'd like to collect::
 
-::
     manager.add(soc.StringSetting('foo'))
     manager.add(soc.IntegerSetting('bar', required=True))
     manager.add(soc.BooleanSetting('baz', default=True))
 
 Retreive the settings from our desired sources, combining the settings and
-overriding with the priority implied by the order of the sources we pass:
+overriding with the priority implied by the order of the sources we pass::
 
-::
     config = manager.retrieve(
         # This source pulls from the command line using argparse.
         soc.CommandLineSource,
