@@ -7,20 +7,60 @@ from .base import Source
 
 
 __all__ = (
+    'HomeDirectory',
+    'ConfigDirectory',
     'FileBasedSource',
 )
+
+
+class DirectoryModifier(object):
+    def __init__(self, target_file):
+        self.target_file = target_file
+
+    def __call__(self):
+        raise NotImplementedError()
+
+
+class HomeDirectory(DirectoryModifier):
+    def __call__(self):
+        return os.path.expanduser(
+            os.path.join(
+                '~',
+                self.target_file,
+            )
+        )
+
+
+class ConfigDirectory(DirectoryModifier):
+    def __call__(self):
+        config_dir = os.getenv('XDG_CONFIG_HOME') \
+            or os.path.expanduser(
+                os.path.join(
+                    '~',
+                    '.config',
+                )
+            )
+
+        return os.path.join(config_dir, self.target_file)
 
 
 class FileBasedSource(Source):
     def __init__(self, files, base_path=None, combine=False):
         super(FileBasedSource, self).__init__()
 
-        if isinstance(files, (list, tuple)):
-            self.files = files
-        elif isinstance(files, basestring):
-            self.files = [files]
-        else:
+        if isinstance(files, (basestring, DirectoryModifier)):
+            files = [files]
+        elif not isinstance(files, (tuple, list)):
             raise TypeError('files must be a string or list of strings')
+
+        self.files = []
+        for target in files:
+            if isinstance(target, basestring):
+                self.files.append(target)
+            elif isinstance(target, DirectoryModifier):
+                self.files.append(target())
+            else:
+                raise TypeError('files must be a string or list of strings')
 
         self.base_path = base_path or os.getcwd()
         self.combine = combine

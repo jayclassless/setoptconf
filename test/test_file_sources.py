@@ -36,6 +36,25 @@ def make_settings():
     return settings
 
 
+def test_directory_modifier():
+    file1 = make_temp("""
+[mytest]
+foo = hello
+bar = 123
+""")
+
+    source = soc.ConfigFileSource(
+        [file1, soc.HomeDirectory('foobar')],
+        section='mytest'
+    )
+    config = source.get_config(make_settings())
+
+    assert config.foo == 'hello'
+    assert config.bar == 123
+    assert config.baz is False
+    assert config.happy is None
+
+
 def test_configfile():
     file1 = make_temp('')
 
@@ -100,6 +119,13 @@ foo = goodbye
 
     try:
         source = soc.ConfigFileSource(123, section='mytest')
+    except TypeError:
+        pass
+    else:
+        assert False, 'Expected TypeError for bogus file name'
+
+    try:
+        source = soc.ConfigFileSource(['foobar', 123], section='mytest')
     except TypeError:
         pass
     else:
