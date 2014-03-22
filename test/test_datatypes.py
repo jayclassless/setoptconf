@@ -124,29 +124,32 @@ def check_bad_list_value(subtype, in_value, exc):
 
 
 GOOD_CHOICE_VALUES = (
-    (['foo', 'bar'], None),
-    (['foo', 'bar'], 'foo'),
-    ([1,2,3], 2),
+    (soc.String, ['foo', 'bar'], None),
+    (soc.String, ['foo', 'bar'], 'foo'),
+    (None, ['foo', 'bar'], 'foo'),
+    (soc.Integer, [1,2,3], 2),
+    (soc.Integer(), [1,2,3], 2),
 )
 
 BAD_CHOICE_VALUES = (
-    (['foo', 'bar'], 'baz', soc.DataTypeError),
-    (['1', 2, 3], 1, soc.DataTypeError),
+    (soc.String, ['foo', 'bar'], 'baz', soc.DataTypeError),
+    (soc.String, [1, 2, 3], 'baz', soc.DataTypeError),
+    ('a', [1, 2, 3], 4, TypeError),
 )
 
 def test_choice_sanitization():
-    for choices, value in GOOD_CHOICE_VALUES:
-        yield check_good_choice_value, choices, value
-    for choices, value, exc in BAD_CHOICE_VALUES:
-        yield check_bad_choice_value, choices, value, exc
+    for subtype, choices, value in GOOD_CHOICE_VALUES:
+        yield check_good_choice_value, subtype, choices, value
+    for subtype, choices, value, exc in BAD_CHOICE_VALUES:
+        yield check_bad_choice_value, subtype, choices, value, exc
 
-def check_good_choice_value(choices, value):
-    dt = soc.Choice(choices)
+def check_good_choice_value(subtype, choices, value):
+    dt = soc.Choice(choices, subtype)
     assert dt.sanitize(value) == value
 
-def check_bad_choice_value(choices, value, exc):
+def check_bad_choice_value(subtype, choices, value, exc):
     try:
-        dt = soc.Choice(choices)
+        dt = soc.Choice(choices, subtype)
         dt.sanitize(value)
     except exc:
         pass

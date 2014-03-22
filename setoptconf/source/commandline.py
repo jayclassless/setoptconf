@@ -14,7 +14,11 @@ __all__ = (
 )
 
 
+# pylint: disable=R0201
+
+
 class CommandLineSource(Source):
+    # pylint: disable=R0913
     def __init__(
             self,
             arguments=None,
@@ -56,6 +60,7 @@ class CommandLineSource(Source):
         else:
             return 'store'
 
+    # pylint: disable=W0613
     def get_default(self, setting):
         # Caveat: Returning something other than SUPPRESS probably won't
         # work the way you'd think.
@@ -64,6 +69,8 @@ class CommandLineSource(Source):
     def get_type(self, setting):
         if isinstance(setting, (ListSetting, BooleanSetting)):
             return None
+        elif isinstance(setting, ChoiceSetting):
+            return setting.subtype.sanitize
         else:
             return setting.sanitize
 

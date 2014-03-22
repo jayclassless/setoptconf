@@ -76,6 +76,6 @@ class ListSetting(Setting, List):
 
 
 class ChoiceSetting(Setting, Choice):
-    def __init__(self, name, choices, **kwargs):
-        Choice.__init__(self, choices)
+    def __init__(self, name, choices, subtype=None, **kwargs):
+        Choice.__init__(self, choices, subtype=subtype)
         Setting.__init__(self, name, **kwargs)

@@ -13,6 +13,8 @@ def make_settings():
     settings.append(setting)
     setting = soc.ListSetting('happy', soc.String)
     settings.append(setting)
+    setting = soc.ChoiceSetting('fuzziness', ['fuzzy', 'bare'], soc.String)
+    settings.append(setting)
     return settings
 
 
@@ -23,6 +25,7 @@ class MyConfig:
 class MyFullConfig(MyConfig):
     baz = True
     happy = ['foo', 'bar']
+    fuzziness = 'bare'
 
 def test_object_source():
     source = soc.ObjectSource(MyConfig)
@@ -32,6 +35,7 @@ def test_object_source():
     assert config.bar == 123
     assert config.baz is False
     assert config.happy is None
+    assert config.fuzziness is None
 
     source = soc.ObjectSource(MyFullConfig)
     config = source.get_config(make_settings())
@@ -40,6 +44,7 @@ def test_object_source():
     assert config.bar == 123
     assert config.baz is True
     assert config.happy == ['foo', 'bar']
+    assert config.fuzziness == 'bare'
 
 
 def test_mapping_source():
@@ -54,9 +59,11 @@ def test_mapping_source():
     assert config.bar == 123
     assert config.baz is False
     assert config.happy is None
+    assert config.fuzziness is None
 
     mapping['baz'] = True
     mapping['happy'] = ['foo', 'bar']
+    mapping['fuzziness'] = 'bare'
     source = soc.MappingSource(mapping)
     config = source.get_config(make_settings())
 
@@ -64,6 +71,7 @@ def test_mapping_source():
     assert config.bar == 123
     assert config.baz is True
     assert config.happy == ['foo', 'bar']
+    assert config.fuzziness == 'bare'
 
 
 def test_environment_source():
@@ -74,6 +82,7 @@ def test_environment_source():
     assert config.bar is None
     assert config.baz is False
     assert config.happy is None
+    assert config.fuzziness is None
     
     os.environ['MYTEST_FOO'] = 'hello'
     os.environ['MYTEST_BAR'] = '123'
@@ -85,9 +94,11 @@ def test_environment_source():
     assert config.bar == 123
     assert config.baz is False
     assert config.happy == []
+    assert config.fuzziness is None
 
     os.environ['MYTEST_BAZ'] = 'yes'
     os.environ['MYTEST_HAPPY'] = 'foo,"bar"'
+    os.environ['MYTEST_FUZZINESS'] = 'bare'
     source = soc.EnvironmentVariableSource('mytest')
     config = source.get_config(make_settings())
 
@@ -95,6 +106,7 @@ def test_environment_source():
     assert config.bar == 123
     assert config.baz is True
     assert config.happy == ['foo', 'bar']
+    assert config.fuzziness == 'bare'
 
 
 def test_commandline_source():
@@ -105,22 +117,25 @@ def test_commandline_source():
     assert config.bar == 123
     assert config.baz is False
     assert config.happy is None
+    assert config.fuzziness is None
 
-    source = soc.CommandLineSource('--foo=hello --bar=123 --baz --happy=foo --happy=bar')
+    source = soc.CommandLineSource('--foo=hello --bar=123 --baz --happy=foo --happy=bar --fuzziness=bare')
     config = source.get_config(make_settings())
 
     assert config.foo == 'hello'
     assert config.bar == 123
     assert config.baz is True
     assert config.happy == ['foo', 'bar']
+    assert config.fuzziness == 'bare'
 
-    source = soc.CommandLineSource(['--foo=hello','--bar=123','--baz','--happy=foo','--happy=bar'])
+    source = soc.CommandLineSource(['--foo=hello','--bar=123','--baz','--happy=foo','--happy=bar','--fuzziness=bare'])
     config = source.get_config(make_settings())
 
     assert config.foo == 'hello'
     assert config.bar == 123
     assert config.baz is True
     assert config.happy == ['foo', 'bar']
+    assert config.fuzziness == 'bare'
 
     try:
         source = soc.CommandLineSource(123)
@@ -144,6 +159,7 @@ def test_commandline_source():
     assert config.bar == 123
     assert config.baz is False
     assert config.happy is None
+    assert config.fuzziness is None
 
     class FakeManager(object):
         name = 'fake'
@@ -160,6 +176,7 @@ def test_commandline_source():
     assert config.bar == 123
     assert config.baz is False
     assert config.happy is None
+    assert config.fuzziness is None
     assert mgr.arguments['red'] == 'myred'
     assert mgr.arguments['blue'] == 4
 

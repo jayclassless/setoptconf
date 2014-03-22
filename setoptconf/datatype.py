@@ -105,12 +105,24 @@ class List(DataType):
 
 
 class Choice(DataType):
-    def __init__(self, choices):
+    def __init__(self, choices, subtype=None):
+        super(Choice, self).__init__()
+
+        subtype = subtype or String()
+        if isinstance(subtype, DataType):
+            self.subtype = subtype
+        elif isinstance(subtype, type) and issubclass(subtype, DataType):
+            self.subtype = subtype()
+        else:
+            raise TypeError('subtype must be a DataType')
+
         self.choices = choices
 
     def sanitize(self, value):
         if value is None:
             return value
+
+        value = self.subtype.sanitize(value)
 
         if value not in self.choices:
             raise DataTypeError(

@@ -48,7 +48,7 @@ def test_list_setting():
 
 
 def test_choice_setting():
-    setting = soc.ChoiceSetting('foo', ['bar', 'baz'])
+    setting = soc.ChoiceSetting('foo', ['bar', 'baz'], soc.String)
 
     assert setting.name == 'foo'
 
