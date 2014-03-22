@@ -114,9 +114,10 @@ class Choice(DataType):
 
         if value not in self.choices:
             raise DataTypeError(
-                '"%s" is not one of (%s)',
-                value,
-                ', '.join([repr(c) for c in self.choices]),
+                '"%s" is not one of (%s)' % (
+                    value,
+                    ', '.join([repr(c) for c in self.choices]),
+                )
             )
 
         return value
