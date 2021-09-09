@@ -2,8 +2,8 @@
 setoptconf
 ==========
 
-.. image:: https://travis-ci.org/jayclassless/setoptconf.svg?branch=master
-   :target: https://travis-ci.org/jayclassless/setoptconf
+.. image:: https://github.com/jayclassless/setoptconf/workflows/Test/badge.svg
+   :target: https://github.com/jayclassless/setoptconf/actions
 
 ``setoptconf`` is a Python library that can be used to retrieve program settings
 from a variety of common sources:
