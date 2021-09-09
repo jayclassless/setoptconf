@@ -73,9 +73,9 @@ class Configuration(UnicodeMixin):
         return item in list(iter(self))
 
     def __unicode__(self):  # pragma: no cover
-        return u'Configuration(%s)' % (
-            u', '.join([
-                u'%s=%s' % (name, repr(self[name]))
+        return 'Configuration(%s)' % (
+            ', '.join([
+                '%s=%s' % (name, repr(self[name]))
                 for name in self
             ])
         )

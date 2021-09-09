@@ -43,7 +43,7 @@ class Setting(UnicodeMixin, DataType):
         self.established = True
 
     def __unicode__(self):  # pragma: no cover
-        return unicode(self.name)
+        return str(self.name)
 
     def __repr__(self):  # pragma: no cover
         return '<%s(%s=%s)>' % (

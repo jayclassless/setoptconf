@@ -1,4 +1,4 @@
-import ConfigParser
+import configparser
 
 from ..setting import ListSetting
 from ..util import csv_to_list
@@ -18,7 +18,7 @@ class ConfigFileSource(FileBasedSource):
     def get_settings_from_file(self, file_path, settings, manager=None):
         section = self.section or manager.name.lower()
 
-        parser = ConfigParser.ConfigParser()
+        parser = configparser.ConfigParser()
         parser.read(file_path)
 
         if not parser.has_section(section):

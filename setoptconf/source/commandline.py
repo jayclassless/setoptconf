@@ -30,7 +30,7 @@ class CommandLineSource(Source):
 
         if arguments is None:
             self.arguments = sys.argv[1:]
-        elif isinstance(arguments, basestring):
+        elif isinstance(arguments, str):
             self.arguments = shlex.split(arguments)
         elif isinstance(arguments, (list, tuple)):
             self.arguments = arguments

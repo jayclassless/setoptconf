@@ -48,14 +48,14 @@ class FileBasedSource(Source):
     def __init__(self, files, base_path=None, combine=False):
         super(FileBasedSource, self).__init__()
 
-        if isinstance(files, (basestring, DirectoryModifier)):
+        if isinstance(files, (str, DirectoryModifier)):
             files = [files]
         elif not isinstance(files, (tuple, list)):
             raise TypeError('files must be a string or list of strings')
 
         self.files = []
         for target in files:
-            if isinstance(target, basestring):
+            if isinstance(target, str):
                 self.files.append(target)
             elif isinstance(target, DirectoryModifier):
                 self.files.append(target())
