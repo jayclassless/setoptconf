@@ -16,7 +16,7 @@ class ModuleSource(Source):
 
         if isinstance(target, types.ModuleType):
             self.target = target
-        elif isinstance(target, basestring):
+        elif isinstance(target, str):
             self.target = __import__(target, globals(), locals(), [], -1)
         else:
             raise TypeError(
@@ -37,7 +37,7 @@ class ObjectSource(Source):
 
         if isinstance(target, (type, object)):
             self.target = target
-        elif isinstance(target, basestring):
+        elif isinstance(target, str):
             parts = target.rsplit('.', 2)
             if len(parts) == 2:
                 mod = parts[0]

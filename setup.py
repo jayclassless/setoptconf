@@ -5,21 +5,7 @@ import sys
 from setuptools import setup, find_packages
 
 
-PYVER = sys.version_info
-SETUP_KWARGS = {}
 DEPENDENCIES = []
-
-
-# Do we need to install argparse?
-if PYVER < (2, 7):
-    DEPENDENCIES.append('argparse')
-elif PYVER >= (3, 0) and PYVER < (3, 2):
-    DEPENDENCIES.append('argparse')
-
-
-# Are we on Py3K?
-if PYVER >= (3, 0):
-    SETUP_KWARGS['use_2to3'] = True
 
 
 def get_version():
@@ -53,9 +39,8 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.1',
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
@@ -66,5 +51,5 @@ setup(
     extras_require={
         'YAML': ['pyyaml'],
     },
-    **SETUP_KWARGS
+    python_requires=">=3.0",
 )

@@ -28,7 +28,7 @@ class DataType(object):
 class String(DataType):
     def sanitize(self, value):
         if value is not None:
-            value = unicode(value)
+            value = str(value)
         return value
 
 
@@ -60,10 +60,10 @@ class Boolean(DataType):
         if value is None or isinstance(value, bool):
             return value
 
-        if isinstance(value, (int, long)):
+        if isinstance(value, int):
             return True if value else False
 
-        if isinstance(value, basestring) and value:
+        if isinstance(value, str) and value:
             value = value.strip().upper()
             if value in self.TRUTHY_STRINGS:
                 return True
