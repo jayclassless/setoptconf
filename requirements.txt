@@ -1,4 +1,5 @@
 pyyaml
 nose
 coverage
-
+twine
+wheel
